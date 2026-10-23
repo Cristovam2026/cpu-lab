@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=3" />
 </head>
 <body>
 
@@ -320,24 +320,69 @@
         </div>
       </div>
 
+      <!-- MINI-GUIA DIDÁTICO: SEQUÊNCIA, CONDICIONAL E LOOP -->
+      <div class="sim-concepts-guide">
+        <div class="concept-guide-card">
+          <div class="concept-guide-header">
+            <span class="concept-guide-icon">➡️</span>
+            <div class="concept-guide-title">1. Sequência Linear</div>
+          </div>
+          <div class="concept-guide-desc">
+            O fluxo natural da CPU. O <strong>Program Counter (PC)</strong> aponta para o endereço 0, depois 1, 2, 3... Cada instrução é executada uma após a outra sem desvios.
+          </div>
+          <div class="concept-guide-example">
+            <code>MOV R1, 10<br>ADD R1, 5<br>HALT</code>
+          </div>
+        </div>
+
+        <div class="concept-guide-card">
+          <div class="concept-guide-header">
+            <span class="concept-guide-icon">🔀</span>
+            <div class="concept-guide-title">2. Condicional (Decisão)</div>
+          </div>
+          <div class="concept-guide-desc">
+            A CPU toma decisões! O comando <code>CMP R1, 0</code> faz a ULA comparar valores e ativar as <strong>Flags</strong> (ex: ZF=1 se for zero). O <code>JZ</code> ou <code>JNZ</code> altera o caminho do PC!
+          </div>
+          <div class="concept-guide-example">
+            <code>CMP R1, 0<br>JZ alerta<br>JMP fim</code>
+          </div>
+        </div>
+
+        <div class="concept-guide-card">
+          <div class="concept-guide-header">
+            <span class="concept-guide-icon">🔁</span>
+            <div class="concept-guide-title">3. Loop (Repetição)</div>
+          </div>
+          <div class="concept-guide-desc">
+            Repetir tarefas sem cansar! Usamos um contador em registrador, diminuímos a cada volta com <code>SUB R1, 1</code> e saltamos para trás com <code>JNZ loop</code> até o contador zerar.
+          </div>
+          <div class="concept-guide-example">
+            <code>loop:<br>ADD R2, 1<br>SUB R1, 1<br>JNZ loop</code>
+          </div>
+        </div>
+      </div>
+
       <div class="sim-layout">
         <div class="card sim-editor-card">
           <div class="card-header"><span class="card-icon">📝</span> Editor de Assembly</div>
           <div class="editor-toolbar">
-            <button class="btn btn-xs" onclick="loadExample('basic')">Exemplo Básico</button>
-            <button class="btn btn-xs" onclick="loadExample('loop')">Loop</button>
-            <button class="btn btn-xs" onclick="loadExample('conditional')">Condicional</button>
+            <button class="btn btn-xs" onclick="loadExample('basic')">➡️ 1. Sequência</button>
+            <button class="btn btn-xs" onclick="loadExample('conditional')">🔀 2. Condicional</button>
+            <button class="btn btn-xs" onclick="loadExample('loop')">🔁 3. Loop</button>
+            <button class="btn btn-xs" onclick="loadExample('multiplication')">⚡ 4. Multiplicação</button>
             <button class="btn btn-xs btn-danger" onclick="clearEditor()">Limpar</button>
           </div>
           <textarea id="asmEditor" class="asm-editor" spellcheck="false" placeholder="; Escreva suas instruções aqui
-; MOV Rx, valor  → guarda valor em Rx
-; ADD Rx, Ry     → Rx = Rx + Ry
-; SUB Rx, Ry     → Rx = Rx - Ry
-; MUL Rx, Ry     → Rx = Rx × Ry
-; CMP Rx, Ry     → compara (seta flags)
-; JMP rotulo     → salta para rotulo
-; JZ  rotulo     → salta se resultado = 0
-; HALT           → encerra o programa
+; MOV Rx, valor/Ry  → guarda valor no registrador Rx
+; ADD Rx, Ry/val    → Rx = Rx + Ry
+; SUB Rx, Ry/val    → Rx = Rx - Ry
+; MUL Rx, Ry/val    → Rx = Rx × Ry
+; INC Rx / DEC Rx   → soma 1 ou subtrai 1 de Rx
+; CMP Rx, Ry/val    → compara valores e seta Flags
+; JMP rotulo        → desvia para o rótulo incondicionalmente
+; JZ  rotulo        → desvia se resultado foi Zero (ZF=1)
+; JNZ rotulo        → desvia se resultado NÃO foi Zero (ZF=0)
+; HALT              → encerra a CPU
 
 MOV R1, 5
 MOV R2, 3
@@ -350,16 +395,19 @@ HALT"></textarea>
             <button class="btn btn-secondary" id="btnReset" onclick="resetSim()" disabled>↺ Reset</button>
           </div>
           <div class="instruction-ref">
-            <div class="ref-title">📖 Referência rápida</div>
+            <div class="ref-title">📖 Referência rápida de instruções</div>
             <div class="ref-grid">
               <div class="ref-item"><code>MOV R1, 42</code> → R1 = 42</div>
               <div class="ref-item"><code>ADD R1, R2</code> → R1 = R1 + R2</div>
-              <div class="ref-item"><code>SUB R1, R2</code> → R1 = R1 − R2</div>
+              <div class="ref-item"><code>SUB R1, 1</code> → R1 = R1 − 1</div>
               <div class="ref-item"><code>MUL R1, R2</code> → R1 = R1 × R2</div>
-              <div class="ref-item"><code>CMP R1, R2</code> → seta flags</div>
+              <div class="ref-item"><code>INC R1</code> → R1 = R1 + 1</div>
+              <div class="ref-item"><code>DEC R1</code> → R1 = R1 − 1</div>
+              <div class="ref-item"><code>CMP R1, 0</code> → compara e seta Flags</div>
               <div class="ref-item"><code>JMP loop</code> → salta para loop</div>
-              <div class="ref-item"><code>JZ  fim</code> → salta se ZF=1</div>
-              <div class="ref-item"><code>HALT</code> → encerra</div>
+              <div class="ref-item"><code>JZ  fim</code> → salta se Zero (ZF=1)</div>
+              <div class="ref-item"><code>JNZ loop</code> → salta se Não Zero (ZF=0)</div>
+              <div class="ref-item"><code>HALT</code> → encerra execução</div>
             </div>
           </div>
         </div>
@@ -393,6 +441,41 @@ HALT"></textarea>
           </div>
         </div>
 
+        <!-- RAIO-X DO PROCESSADOR: O QUE A CPU FAZ POR DENTRO -->
+        <div class="card sim-hw-card" id="hardwareActionCard">
+          <div class="card-header"><span class="card-icon">⚡</span> Raio-X do Processador: O que a CPU está fazendo agora?</div>
+          
+          <div class="hw-stage-pipeline">
+            <div class="hw-stage-badge" id="hwStage-IF">1. 🔍 Busca (Fetch)</div>
+            <div class="hw-stage-badge" id="hwStage-ID">2. ⚙️ Decodificação</div>
+            <div class="hw-stage-badge" id="hwStage-EX">3. 🧮 Execução (ULA)</div>
+            <div class="hw-stage-badge" id="hwStage-WB">4. 💾 Gravação (WB)</div>
+          </div>
+
+          <div class="hw-components-row">
+            <span class="hw-comp-label">Componentes no Chip:</span>
+            <span class="hw-comp-badge" id="hwComp-CU">🧠 Unidade de Controle</span>
+            <span class="hw-comp-badge" id="hwComp-ALU">🧮 ULA (Cálculo)</span>
+            <span class="hw-comp-badge" id="hwComp-BUS">🚌 Barramento</span>
+            <span class="hw-comp-badge" id="hwComp-REG">📦 Registradores</span>
+            <span class="hw-comp-badge" id="hwComp-FLAGS">🚩 Flags de Status</span>
+          </div>
+
+          <div class="hw-narration-box">
+            <div class="hw-action-title">
+              <span>Instrução em Execução:</span>
+              <span class="hw-action-code" id="hwActionCode">—</span>
+            </div>
+            <div class="hw-explanation-text" id="hwExplanationText">
+              Carregue ou digite um programa assembly e clique em <strong>"→ Passo"</strong> para acompanhar em detalhes o que acontece fisicamente dentro do processador a cada ciclo de clock.
+            </div>
+            <div class="hw-next-info" id="hwNextInfo">
+              <span>Próximo passo: <strong id="hwNextStepDesc">Aguardando compilação do código</strong></span>
+              <span id="hwClockCount">Ciclos: 0</span>
+            </div>
+          </div>
+        </div>
+
         <div class="card sim-console-card">
           <div class="card-header"><span class="card-icon">📟</span> Console / Log</div>
           <div class="console-output" id="consoleOutput">
@@ -405,10 +488,10 @@ HALT"></textarea>
       <div class="activity-section" id="act-simulator">
         <div class="activity-header">
           <span class="act-icon">🎯</span>
-          <span class="act-title">Desafios — Programe a CPU</span>
+          <span class="act-title">Missões Didáticas — Programe a CPU</span>
           <span class="act-badge" id="badge-simulator" style="display:none">✅ Concluída</span>
         </div>
-        <p class="act-desc">Complete os 3 desafios abaixo usando o simulador. Escreva o código no editor, compile e execute. O sistema verificará automaticamente.</p>
+        <p class="act-desc">Complete as 4 missões práticas abaixo para dominar <strong>Sequência</strong>, <strong>Condicionais</strong> e <strong>Loops</strong>. Você pode clicar em <strong>"📥 Carregar Esqueleto"</strong> para colocar a base do código no editor e completar!</p>
         <div class="activity-body" id="actBody-simulator"></div>
       </div>
     </section>
@@ -676,6 +759,6 @@ HALT"></textarea>
     </div>
   </div>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=3"></script>
 </body>
 </html>

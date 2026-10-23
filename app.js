@@ -118,33 +118,36 @@ function renderProfContent() {
     <div class="prof-time-badge">Tempo estimado: 90 minutos</div>
     <div class="prof-item"><strong>1. Visão Geral (15 min):</strong> Use a analogia da cozinha. Peça para identificarem quem é o Chef (CU) e quem é o cozinheiro (ULA).</div>
     <div class="prof-item"><strong>2. Ciclo de Instrução (20 min):</strong> Mostre a animação passo a passo primeiro. Depois ative o modo automático.</div>
-    <div class="prof-item"><strong>3. Simulador (25 min):</strong> É a parte mais complexa. Faça o "Exemplo Básico" junto com eles no projetor antes de soltá-los nos desafios.</div>
+    <div class="prof-item"><strong>3. Simulador (30 min):</strong> Destaque o <em>Raio-X do Processador</em>. Use o botão <strong>"→ Passo"</strong> para mostrar a ULA e o PC em ação. Incentive o uso dos botões <strong>"Carregar Esqueleto"</strong> para os alunos que têm receio de digitar do zero.</div>
     <div class="prof-item"><strong>4. Pipeline (15 min):</strong> Foco na analogia do lava-rápido. Mostre visualmente como os blocos se sobrepõem.</div>
-    <div class="prof-item"><strong>5. Memória (15 min):</strong> Destaque a relação Custo x Benefício da pirâmide. O simulador de cache ajuda a entender o "Hit/Miss".</div>
+    <div class="prof-item"><strong>5. Memória (10 min):</strong> Destaque a relação Custo x Benefício da pirâmide. O simulador de cache ajuda a entender o "Hit/Miss".</div>
   `;
   
   document.getElementById("ptab-gabarito").innerHTML = `
     <div class="prof-section-title">Gabarito das Atividades</div>
     <div class="prof-item"><strong>Visão Geral:</strong> 1-CU, 2-ULA, 3-Registradores, 4-RAM</div>
     <div class="prof-item"><strong>Ciclo:</strong> Fetch → Decode → Fetch Operands → Execute → Write Back</div>
-    <div class="prof-item"><strong>Simulador D1:</strong> <code>MOV R1, 10</code></div>
-    <div class="prof-item"><strong>Simulador D2:</strong> <code>MOV R1, 7</code> | <code>MOV R2, 5</code> | <code>ADD R1, R2</code> | <code>MOV R3, R1</code></div>
+    <div class="prof-item"><strong>Simulador M1 (Sequência):</strong> <code>MOV R1, 25</code> | <code>MOV R2, 7</code> | <code>SUB R1, R2</code> | <code>MOV R3, 4</code> | <code>ADD R1, R3</code> | <code>HALT</code> (R1 = 22)</div>
+    <div class="prof-item"><strong>Simulador M2 (Condicional):</strong> <code>MOV R1, 0</code> | <code>CMP R1, 0</code> | <code>JZ alarme</code> | <code>MOV R0, 1</code> | <code>JMP fim</code> | <code>alarme: MOV R0, 99</code> | <code>fim: HALT</code> (R0 = 99)</div>
+    <div class="prof-item"><strong>Simulador M3 (Loop):</strong> <code>MOV R1, 4</code> | <code>MOV R2, 0</code> | <code>loop: ADD R2, R1</code> | <code>SUB R1, 1</code> | <code>JNZ loop</code> | <code>HALT</code> (R2 = 10, R1 = 0)</div>
+    <div class="prof-item"><strong>Simulador M4 (Multiplicação):</strong> <code>MOV R1, 3</code> | <code>MOV R2, 5</code> | <code>MOV R3, 0</code> | <code>repete: ADD R3, R1</code> | <code>SUB R2, 1</code> | <code>JNZ repete</code> | <code>HALT</code> (R3 = 15, R2 = 0)</div>
     <div class="prof-item"><strong>Pipeline:</strong> n=10, k=5. Sem pipe=50. Com pipe=14. Speedup=3.57.</div>
     <div class="prof-item"><strong>Memória:</strong> Registradores (Mais rápido, <1ns), RAM (Fora da CPU), HD (Não volátil, Lento).</div>
   `;
   
   document.getElementById("ptab-perguntas").innerHTML = `
     <div class="prof-section-title">Perguntas para provocar a turma</div>
+    <div class="prof-item">"Como a CPU sabe se dois números são iguais se a ULA só sabe fazer contas?" (R: Ela faz uma subtração dos dois. Se o resultado der zero, a Flag ZF acende!).</div>
+    <div class="prof-item">"Por que todo loop precisa alterar um valor antes de saltar?" (R: Se não diminuir o contador, a condição nunca muda e o processador entra em loop infinito!).</div>
     <div class="prof-item">"Se o clock é a velocidade, por que um processador de 3GHz antigo perde para um de 2GHz novo?" (R: IPC, arquitetura, pipeline melhor).</div>
     <div class="prof-item">"O que acontece se a luz acabar? O que salva e o que perde?" (R: RAM/Cache perdem, HD/SSD salvam).</div>
-    <div class="prof-item">"Por que não fazemos o cache do tamanho do HD?" (R: Custo e espaço físico no chip).</div>
   `;
   
   document.getElementById("ptab-atencao").innerHTML = `
     <div class="prof-section-title">Erros Comuns dos Alunos (PROSUB)</div>
-    <div class="prof-tip">Muitos confundem <strong>RAM</strong> com <strong>HD</strong>. Reforce: RAM é a bancada de trabalho (temporária), HD é o armário (permanente).</div>
-    <div class="prof-tip">No simulador, eles esquecem do <code>HALT</code>. Se o programa não parar, ele tenta executar lixo de memória.</div>
-    <div class="prof-tip">Eles tendem a achar que a ULA busca os dados. Reforce que a CU é quem comanda a busca, a ULA só calcula.</div>
+    <div class="prof-tip"><strong>Esquecer o HALT:</strong> Sem HALT, a CPU não sabe onde parar e continua avançando o PC para posições vazias.</div>
+    <div class="prof-tip"><strong>Loop Infinito:</strong> Em loops, os alunos frequentemente esquecem o <code>SUB R1, 1</code>. Explique que o contador precisa diminuir para alcançar a condição de saída!</div>
+    <div class="prof-tip"><strong>Confundir CMP com MOV:</strong> Enfatize que o <code>CMP</code> não altera registradores, apenas atualiza as lâmpadas de status (Flags ZF e NF).</div>
   `;
 }
 
@@ -352,17 +355,63 @@ function act2Select(id, name) {
 }
 
 // ──────────────────────────────────────────────
-// SIMULADOR & ATIVIDADE 3
+// SIMULADOR & ATIVIDADE 3 (PROSUB DIDÁTICO)
 // ──────────────────────────────────────────────
 const SIM_REGISTERS = ["R0","R1","R2","R3","R4","R5","R6","R7"];
 let simRegs = {};
 let simPC = 0, simIR = "—", simACC = 0, simFlags = { Z:0, N:0, C:0, O:0 };
 let simProgram = [], simRunning = false, simTimer = null, simInitialized = false;
+let simStepCount = 0, simClockCount = 0;
 
 const examples = {
-  basic: `; Soma básica\nMOV R1, 5\nMOV R2, 3\nADD R1, R2\nHALT`,
-  loop: `; Loop simples\nMOV R1, 0\nMOV R2, 5\nMOV R3, 1\nloop:\nADD R1, R3\nCMP R1, R2\nJZ done\nJMP loop\ndone:\nHALT`,
-  conditional: `; Maior valor\nMOV R1, 7\nMOV R2, 4\nCMP R1, R2\nJZ iguais\nMOV R0, R1\nHALT\niguais:\nMOV R0, R2\nHALT`
+  basic: `; 1. SEQUÊNCIA LINEAR
+; O processador executa cada instrução na ordem natural
+MOV R1, 25    ; Guarda 25 no registrador R1
+MOV R2, 7     ; Guarda 7 no registrador R2
+SUB R1, R2    ; Subtrai R2 de R1 (25 - 7 = 18)
+ADD R1, 4     ; Soma 4 diretamente em R1 (18 + 4 = 22)
+HALT          ; Fim do programa (R1 = 22)`,
+
+  conditional: `; 2. CONDICIONAL (IF / ELSE)
+; A CPU compara valores e decide qual bloco executar
+MOV R1, 0         ; Valor de entrada (ex: sensor = 0)
+CMP R1, 0         ; Compara R1 com 0 (seta Flag ZF=1 se iguais)
+JZ congelado      ; Se ZF=1, salta para o rótulo 'congelado'
+
+; Bloco ELSE (se NÃO for zero):
+MOV R0, 1         ; R0 = 1 (Operação normal)
+JMP fim           ; Salta para o fim sem passar pelo bloco abaixo
+
+congelado:        ; Bloco IF (se for zero):
+MOV R0, 99        ; R0 = 99 (Alerta de congelamento!)
+
+fim:
+HALT`,
+
+  loop: `; 3. LOOP (REPETIÇÃO COM CONTADOR)
+; Soma 4 + 3 + 2 + 1 através de um laço de repetição
+MOV R1, 4         ; Contador: começa em 4
+MOV R2, 0         ; Acumulador do total: começa em 0
+
+loop:
+ADD R2, R1        ; R2 = R2 + R1 (soma o contador atual)
+SUB R1, 1         ; Decrementa o contador em 1 (4 -> 3 -> 2 -> 1 -> 0)
+JNZ loop          ; Se R1 ainda NÃO é zero (ZF=0), repete o loop!
+
+HALT              ; Ao final, R2 = 10 e R1 = 0`,
+
+  multiplication: `; 4. MULTIPLICAÇÃO POR REPETIÇÃO
+; Multiplica 3 x 5 somando o número 3 cinco vezes
+MOV R1, 3         ; Número base
+MOV R2, 5         ; Contador de repetições (5 vezes)
+MOV R3, 0         ; Acumulador do resultado
+
+repete:
+ADD R3, R1        ; Acumula 3 em R3
+SUB R2, 1         ; Reduz 1 repetição
+JNZ repete        ; Enquanto o contador não for zero, repete!
+
+HALT              ; R3 terminará com 15 (3 x 5)`
 };
 
 function initSim() {
@@ -373,10 +422,19 @@ function initSim() {
     grid.innerHTML += `<div class="sim-reg" id="sreg-${reg}"><div class="sim-reg-name">${reg}</div><div class="sim-reg-val" id="sval-${reg}">0</div></div>`;
   });
   resetSimState();
+  initAct3();
 }
 
-function loadExample(name) { document.getElementById("asmEditor").value = examples[name] || ""; }
-function clearEditor() { document.getElementById("asmEditor").value = ""; }
+function loadExample(name) {
+  document.getElementById("asmEditor").value = examples[name] || "";
+  loadProgram();
+  logConsole(`Exemplo "${name}" carregado. Clique em "→ Passo" para ver a CPU em ação!`, "info");
+}
+
+function clearEditor() {
+  document.getElementById("asmEditor").value = "";
+  resetSim();
+}
 
 function parseProgram(source) {
   const lines = source.split("\n");
@@ -385,8 +443,11 @@ function parseProgram(source) {
   lines.forEach(line => {
     const cleaned = line.trim().replace(/;.*$/, "").trim();
     if (!cleaned) return;
-    if (cleaned.endsWith(":")) labels[cleaned.slice(0, -1).toLowerCase()] = addr;
-    else addr++;
+    if (cleaned.endsWith(":")) {
+      labels[cleaned.slice(0, -1).trim().toLowerCase()] = addr;
+    } else {
+      addr++;
+    }
   });
   lines.forEach(line => {
     const cleaned = line.trim().replace(/;.*$/, "").trim();
@@ -401,7 +462,10 @@ function loadProgram() {
   const src = document.getElementById("asmEditor").value;
   try {
     const { instructions } = parseProgram(src);
-    if (!instructions.length) { logConsole("Nenhum código.", "warn"); return; }
+    if (!instructions.length) {
+      logConsole("Aviso: Nenhum código assembly válido para compilar.", "warn");
+      return;
+    }
     simProgram = instructions;
     resetSimState();
     renderProgMemory();
@@ -409,111 +473,506 @@ function loadProgram() {
     document.getElementById("btnRun").disabled  = false;
     document.getElementById("btnReset").disabled = false;
     document.getElementById("btnLoad").disabled  = true;
-    logConsole("Programa compilado.", "success");
+    logConsole("✓ Programa compilado com sucesso! Clique em '→ Passo' ou '▶ Executar'.", "success");
+    updateHardwareActionInitial();
     updateSimUI();
-  } catch(e) { logConsole("Erro: " + e.message, "error"); }
+  } catch(e) {
+    logConsole("Erro de sintaxe: " + e.message, "error");
+  }
 }
 
 function resetSimState() {
-  simRegs = {}; SIM_REGISTERS.forEach(r => simRegs[r] = 0);
-  simPC = 0; simIR = "—"; simACC = 0; simFlags = {Z:0, N:0, C:0, O:0};
-  clearInterval(simTimer); simRunning = false;
-}
-function resetSim() {
-  resetSimState(); simProgram = [];
-  document.getElementById("btnStep").disabled = true; document.getElementById("btnRun").disabled = true;
-  document.getElementById("btnReset").disabled = true; document.getElementById("btnLoad").disabled = false;
-  document.getElementById("progMemory").innerHTML = "";
-  updateSimUI(); logConsole("Reset.", "info");
+  simRegs = {};
+  SIM_REGISTERS.forEach(r => simRegs[r] = 0);
+  simPC = 0;
+  simIR = "—";
+  simACC = 0;
+  simFlags = { Z:0, N:0, C:0, O:0 };
+  simStepCount = 0;
+  simClockCount = 0;
+  clearInterval(simTimer);
+  simRunning = false;
 }
 
-function stepProgram() { if (simPC < simProgram.length) execInstruction(); else logConsole("Fim.", "warn"); }
-function runProgram() {
-  if (simRunning) { clearInterval(simTimer); simRunning = false; document.getElementById("btnRun").textContent = "▶ Executar"; }
-  else {
-    simRunning = true; document.getElementById("btnRun").textContent = "⏸ Pausar";
-    simTimer = setInterval(() => { if (simPC >= simProgram.length) runProgram(); else execInstruction(); }, 500);
+function resetSim() {
+  resetSimState();
+  simProgram = [];
+  document.getElementById("btnStep").disabled = true;
+  document.getElementById("btnRun").disabled = true;
+  document.getElementById("btnReset").disabled = true;
+  document.getElementById("btnLoad").disabled = false;
+  document.getElementById("btnRun").textContent = "▶ Executar";
+  document.getElementById("progMemory").innerHTML = "";
+  updateSimUI();
+  updateHardwareActionInitial();
+  logConsole("Simulador resetado ao estado inicial.", "info");
+}
+
+function stepProgram() {
+  if (simPC < simProgram.length) {
+    execInstruction();
+  } else {
+    logConsole("Fim do programa alcançado. Clique em '↺ Reset' para recomeçar.", "warn");
   }
+}
+
+function runProgram() {
+  if (simRunning) {
+    clearInterval(simTimer);
+    simRunning = false;
+    document.getElementById("btnRun").textContent = "▶ Executar";
+    logConsole("Execução pausada pelo usuário.", "info");
+  } else {
+    simRunning = true;
+    document.getElementById("btnRun").textContent = "⏸ Pausar";
+    simTimer = setInterval(() => {
+      if (simPC >= simProgram.length) {
+        clearInterval(simTimer);
+        simRunning = false;
+        document.getElementById("btnRun").textContent = "▶ Executar";
+      } else {
+        execInstruction();
+      }
+    }, 450);
+  }
+}
+
+function setFlags(val) {
+  simFlags.Z = (val === 0) ? 1 : 0;
+  simFlags.N = (val < 0) ? 1 : 0;
+}
+
+function updateHardwareActionInitial() {
+  setHwStages("IF");
+  setHwComponents(["CU"]);
+  const codeEl = document.getElementById("hwActionCode");
+  const expEl = document.getElementById("hwExplanationText");
+  const nextEl = document.getElementById("hwNextStepDesc");
+  const clkEl = document.getElementById("hwClockCount");
+  if (codeEl) codeEl.textContent = "—";
+  if (expEl) expEl.innerHTML = "Programa carregado na memória RAM. Clique em <strong>'→ Passo'</strong> para avançar uma instrução por vez e ver o que acontece fisicamente no chip!";
+  if (nextEl) nextEl.textContent = simProgram.length ? `Instrução #0: ${simProgram[0].op} ${simProgram[0].args.join(",")}` : "Aguardando código";
+  if (clkEl) clkEl.textContent = "Ciclos: 0";
+}
+
+function setHwStages(activeStage) {
+  const stages = ["IF", "ID", "EX", "WB"];
+  stages.forEach(s => {
+    const el = document.getElementById("hwStage-" + s);
+    if (el) el.classList.toggle("active", s === activeStage);
+  });
+}
+
+function setHwComponents(activeComps) {
+  const allComps = ["CU", "ALU", "BUS", "REG", "FLAGS"];
+  allComps.forEach(c => {
+    const el = document.getElementById("hwComp-" + c);
+    if (el) el.classList.toggle("active", activeComps.includes(c));
+  });
 }
 
 function execInstruction() {
   if (simPC >= simProgram.length) return;
+  
+  simStepCount++;
+  simClockCount++;
+
+  // Proteção contra loop infinito acidental do aluno (evita travamento do navegador)
+  if (simStepCount > 2000) {
+    if (simRunning) {
+      clearInterval(simTimer);
+      simRunning = false;
+      document.getElementById("btnRun").textContent = "▶ Executar";
+    }
+    logConsole("⚠️ Loop infinito detectado (limite de 2000 ciclos atingido). O programa foi pausado automaticamente para proteger seu navegador!", "warn");
+    const expEl = document.getElementById("hwExplanationText");
+    if (expEl) {
+      expEl.innerHTML = "<strong style='color:var(--warning);'>⚠️ Loop Infinito:</strong> A condição de parada do seu loop nunca é atingida. Verifique se você está diminuindo o contador (ex: <code>SUB R1, 1</code>) antes do <code>JNZ</code>!";
+    }
+    return;
+  }
+
   const instr = simProgram[simPC];
   simIR = instr.op + " " + instr.args.join(", ");
-  const getVal = (a) => (a && a.toUpperCase() in simRegs) ? simRegs[a.toUpperCase()] : parseInt(a)||0;
-  
+  const getVal = (a) => (a && a.toUpperCase() in simRegs) ? simRegs[a.toUpperCase()] : (parseInt(a) || 0);
+
   let jumped = false;
   const prevRegs = { ...simRegs };
+  const currentAddr = simPC;
+  let explanation = "";
+  let activeComps = ["CU"];
+  let activeStage = "EX";
 
   switch (instr.op) {
-    case "MOV": simRegs[instr.args[0].toUpperCase()] = getVal(instr.args[1]); break;
-    case "ADD": simRegs[instr.args[0].toUpperCase()] += getVal(instr.args[1]); setFlags(simRegs[instr.args[0].toUpperCase()]); break;
-    case "SUB": simRegs[instr.args[0].toUpperCase()] -= getVal(instr.args[1]); setFlags(simRegs[instr.args[0].toUpperCase()]); break;
-    case "MUL": simRegs[instr.args[0].toUpperCase()] *= getVal(instr.args[1]); setFlags(simRegs[instr.args[0].toUpperCase()]); break;
-    case "CMP": setFlags(getVal(instr.args[0]) - getVal(instr.args[1])); break;
-    case "JMP": if (instr.labels[instr.args[0].toLowerCase()] !== undefined) { simPC = instr.labels[instr.args[0].toLowerCase()]; jumped = true; } break;
-    case "JZ":  if (simFlags.Z && instr.labels[instr.args[0].toLowerCase()] !== undefined) { simPC = instr.labels[instr.args[0].toLowerCase()]; jumped = true; } break;
-    case "HALT": simPC = simProgram.length; jumped = true; logConsole("HALT executado.", "success"); checkChallenges(); break;
+    case "MOV": {
+      activeStage = "WB";
+      activeComps = ["CU", "BUS", "REG"];
+      const targetReg = instr.args[0].toUpperCase();
+      const val = getVal(instr.args[1]);
+      simRegs[targetReg] = val;
+      explanation = `A <strong>Unidade de Controle (UC)</strong> identificou comando de atribuição. O <strong>Barramento de Dados</strong> transportou o valor <strong>${val}</strong> para a caixinha do registrador <strong>${targetReg}</strong>.`;
+      break;
+    }
+    case "ADD": {
+      activeStage = "WB";
+      activeComps = ["CU", "ALU", "REG", "FLAGS"];
+      const targetReg = instr.args[0].toUpperCase();
+      const prevVal = simRegs[targetReg] || 0;
+      const operand = getVal(instr.args[1]);
+      const res = prevVal + operand;
+      simRegs[targetReg] = res;
+      setFlags(res);
+      explanation = `A <strong>Unidade de Controle</strong> enviou os operandos (${prevVal} e ${operand}) para a <strong>ULA</strong>. A ULA somou <code>${prevVal} + ${operand} = ${res}</code> e gravou no registrador <strong>${targetReg}</strong>. Flags atualizadas: ZF=${simFlags.Z}.`;
+      break;
+    }
+    case "SUB": {
+      activeStage = "WB";
+      activeComps = ["CU", "ALU", "REG", "FLAGS"];
+      const targetReg = instr.args[0].toUpperCase();
+      const prevVal = simRegs[targetReg] || 0;
+      const operand = getVal(instr.args[1]);
+      const res = prevVal - operand;
+      simRegs[targetReg] = res;
+      setFlags(res);
+      explanation = `A <strong>ULA</strong> realizou a subtração: <code>${prevVal} - ${operand} = ${res}</code> e salvou em <strong>${targetReg}</strong>. ${res === 0 ? 'Como o resultado deu ZERO, a <strong>Flag Zero (ZF)</strong> foi ATIVADA (= 1)!' : `Como o resultado não é zero (${res}), a Flag ZF é 0.`}`;
+      break;
+    }
+    case "INC": {
+      activeStage = "WB";
+      activeComps = ["CU", "ALU", "REG", "FLAGS"];
+      const targetReg = instr.args[0].toUpperCase();
+      const res = (simRegs[targetReg] || 0) + 1;
+      simRegs[targetReg] = res;
+      setFlags(res);
+      explanation = `A <strong>ULA</strong> incrementou o registrador <strong>${targetReg}</strong> em 1 (agora vale ${res}).`;
+      break;
+    }
+    case "DEC": {
+      activeStage = "WB";
+      activeComps = ["CU", "ALU", "REG", "FLAGS"];
+      const targetReg = instr.args[0].toUpperCase();
+      const res = (simRegs[targetReg] || 0) - 1;
+      simRegs[targetReg] = res;
+      setFlags(res);
+      explanation = `A <strong>ULA</strong> decrementou o registrador <strong>${targetReg}</strong> em 1 (agora vale ${res}). ${res === 0 ? 'O valor zerou! <strong>Flag ZF=1</strong>.' : ''}`;
+      break;
+    }
+    case "MUL": {
+      activeStage = "WB";
+      activeComps = ["CU", "ALU", "REG", "FLAGS"];
+      const targetReg = instr.args[0].toUpperCase();
+      const prevVal = simRegs[targetReg] || 0;
+      const operand = getVal(instr.args[1]);
+      const res = prevVal * operand;
+      simRegs[targetReg] = res;
+      setFlags(res);
+      explanation = `A <strong>ULA</strong> multiplicou <code>${prevVal} × ${operand} = ${res}</code> e guardou em <strong>${targetReg}</strong>.`;
+      break;
+    }
+    case "CMP": {
+      activeStage = "EX";
+      activeComps = ["CU", "ALU", "FLAGS"];
+      const val1 = getVal(instr.args[0]);
+      const val2 = getVal(instr.args[1]);
+      const diff = val1 - val2;
+      setFlags(diff);
+      explanation = `A <strong>ULA</strong> comparou <code>${val1}</code> com <code>${val2}</code> (subtração interna de teste). Os registradores NÃO mudam. ${diff === 0 ? 'Valores IGUAIS! A <strong>Flag Zero (ZF)</strong> foi ligada em 1.' : `Valores DIFERENTES (${val1} ≠ ${val2}). A Flag Zero ficou em 0.`}`;
+      break;
+    }
+    case "JMP": {
+      activeStage = "ID";
+      activeComps = ["CU", "REG"];
+      const label = instr.args[0].toLowerCase();
+      if (instr.labels[label] !== undefined) {
+        const dest = instr.labels[label];
+        simPC = dest;
+        jumped = true;
+        explanation = `Salto Incondicional! A <strong>Unidade de Controle</strong> alterou diretamente o <strong>Program Counter (PC)</strong> para o endereço <strong>${dest}</strong> (rótulo <code>${label}</code>). O fluxo linear foi desviado.`;
+      }
+      break;
+    }
+    case "JZ": {
+      activeStage = "EX";
+      activeComps = ["CU", "FLAGS", "REG"];
+      const label = instr.args[0].toLowerCase();
+      if (simFlags.Z && instr.labels[label] !== undefined) {
+        const dest = instr.labels[label];
+        simPC = dest;
+        jumped = true;
+        explanation = `Desvio Condicional Realizado! A <strong>Flag Zero (ZF)</strong> está em 1 (condição verdadeira). O PC saltou para <strong>${dest}</strong> (rótulo <code>${label}</code>).`;
+      } else {
+        explanation = `Desvio NÃO realizado: A <strong>Flag Zero (ZF)</strong> é 0 (condição falsa). A CPU ignora o salto e continua na próxima linha.`;
+      }
+      break;
+    }
+    case "JNZ": {
+      activeStage = "EX";
+      activeComps = ["CU", "FLAGS", "REG"];
+      const label = instr.args[0].toLowerCase();
+      if (!simFlags.Z && instr.labels[label] !== undefined) {
+        const dest = instr.labels[label];
+        simPC = dest;
+        jumped = true;
+        explanation = `🔁 <strong>Salto do Loop Realizado!</strong> Como ZF=0 (resultado NÃO é zero), a CPU saltou de volta para <code>${label}</code> (endereço ${dest}), repetindo o bloco de instruções!`;
+      } else {
+        explanation = `Fim do Loop! A Flag Zero é 1 (o contador chegou a zero). O processador NÃO salta e segue em frente para a próxima instrução.`;
+      }
+      break;
+    }
+    case "JGT":
+    case "JG": {
+      activeStage = "EX";
+      activeComps = ["CU", "FLAGS", "REG"];
+      const label = instr.args[0].toLowerCase();
+      if (!simFlags.Z && !simFlags.N && instr.labels[label] !== undefined) {
+        const dest = instr.labels[label];
+        simPC = dest;
+        jumped = true;
+        explanation = `Desvio Realizado! O valor testado é maior que zero (ZF=0, NF=0). PC saltou para <strong>${dest}</strong>.`;
+      } else {
+        explanation = `Desvio NÃO realizado: O valor não é maior que zero. O processador segue na sequência.`;
+      }
+      break;
+    }
+    case "HALT": {
+      activeStage = "ID";
+      activeComps = ["CU"];
+      simPC = simProgram.length;
+      jumped = true;
+      explanation = `🛑 <strong>HALT Executado!</strong> A Unidade de Controle recebeu sinal de parada e suspendeu o ciclo de clock. O programa finalizou.`;
+      logConsole("✓ HALT executado: Programa finalizado com sucesso.", "success");
+      if (simRunning) {
+        clearInterval(simTimer);
+        simRunning = false;
+        document.getElementById("btnRun").textContent = "▶ Executar";
+      }
+      checkChallenges();
+      break;
+    }
+    default: {
+      explanation = `Instrução ${instr.op} executada.`;
+    }
   }
+
   if (!jumped) simPC++;
-  updateSimUI(prevRegs); renderProgMemory();
+
+  // Atualiza painel Raio-X do Processador
+  setHwStages(activeStage);
+  setHwComponents(activeComps);
+  const codeEl = document.getElementById("hwActionCode");
+  const expEl = document.getElementById("hwExplanationText");
+  const nextEl = document.getElementById("hwNextStepDesc");
+  const clkEl = document.getElementById("hwClockCount");
+
+  if (codeEl) codeEl.textContent = `[${currentAddr}] ${simIR}`;
+  if (expEl) expEl.innerHTML = explanation;
+  if (clkEl) clkEl.textContent = "Ciclos: " + simClockCount;
+  if (nextEl) {
+    if (simPC < simProgram.length) {
+      const nextIns = simProgram[simPC];
+      nextEl.innerHTML = `Endereço <strong>${simPC}</strong>: <code>${nextIns.op} ${nextIns.args.join(", ")}</code>`;
+    } else {
+      nextEl.innerHTML = "<em>Execução finalizada (Fim do código)</em>";
+    }
+  }
+
+  updateSimUI(prevRegs);
+  renderProgMemory();
 }
-function setFlags(val) { simFlags.Z = val===0?1:0; simFlags.N = val<0?1:0; }
 
 function updateSimUI(prevRegs) {
   SIM_REGISTERS.forEach(r => {
     const el = document.getElementById("sval-" + r);
     if (el) el.textContent = simRegs[r] ?? 0;
     if (prevRegs && prevRegs[r] !== simRegs[r]) {
-      document.getElementById("sreg-"+r).classList.add("changed");
-      setTimeout(() => document.getElementById("sreg-"+r).classList.remove("changed"), 500);
+      const regEl = document.getElementById("sreg-" + r);
+      if (regEl) {
+        regEl.classList.add("changed");
+        setTimeout(() => regEl.classList.remove("changed"), 500);
+      }
     }
   });
-  document.getElementById("simPC").textContent = simPC; document.getElementById("simIR").textContent = simIR;
-  document.getElementById("fZ").textContent = simFlags.Z; document.getElementById("fN").textContent = simFlags.N;
+
+  document.getElementById("simPC").textContent = simPC;
+  document.getElementById("simIR").textContent = simIR;
+  document.getElementById("fZ").textContent = simFlags.Z;
+  document.getElementById("fN").textContent = simFlags.N;
+
+  // Atualiza destaque visual das flags
+  const flagZEl = document.getElementById("flagZ");
+  if (flagZEl) flagZEl.classList.toggle("active", simFlags.Z === 1);
+  const flagNEl = document.getElementById("flagN");
+  if (flagNEl) flagNEl.classList.toggle("active", simFlags.N === 1);
 }
+
 function renderProgMemory() {
-  const pm = document.getElementById("progMemory"); pm.innerHTML = "";
+  const pm = document.getElementById("progMemory");
+  if (!pm) return;
+  pm.innerHTML = "";
   simProgram.forEach((ins, i) => {
-    pm.innerHTML += `<div class="pm-row ${i === simPC ? 'current' : ''}"><span class="pm-addr">${i}:</span><span class="pm-inst">${ins.op} ${ins.args.join(",")}</span></div>`;
+    pm.innerHTML += `<div class="pm-row ${i === simPC ? 'current' : ''}">
+      <span class="pm-addr">${i}:</span>
+      <span class="pm-inst">${ins.op} ${ins.args.join(", ")}</span>
+      ${i === simPC ? '<span class="pm-arrow">◀ PC</span>' : ''}
+    </div>`;
   });
 }
+
 function logConsole(msg, type="info") {
   const con = document.getElementById("consoleOutput");
+  if (!con) return;
   con.innerHTML += `<div class="console-line console-${type}">${msg}</div>`;
   con.scrollTop = con.scrollHeight;
 }
 
-// ATIVIDADE 3 - Desafios do Simulador
-let simChal = [false, false, false];
+// ──────────────────────────────────────────────
+// ATIVIDADE 3 - 4 MISSÕES DIDÁTICAS DO SIMULADOR
+// ──────────────────────────────────────────────
+const SIM_CHALLENGES = [
+  {
+    id: 0,
+    category: "1. Sequência",
+    title: "Missão 1: Controle de Estoque (Sequência Aritmética)",
+    desc: "Uma loja tinha <strong>25 itens</strong> no estoque (registrador <code>R1</code>). Vendeu <strong>7 itens</strong> (<code>R2</code>) e depois recebeu reposição de <strong>4 itens</strong> (<code>R3</code>). Escreva um programa sequencial com <code>MOV</code>, <code>SUB</code> e <code>ADD</code>. Ao final com <code>HALT</code>, <code>R1</code> deve conter exatamente <strong>22</strong>.",
+    hint: "1. <code>MOV R1, 25</code><br>2. <code>MOV R2, 7</code><br>3. <code>SUB R1, R2</code> (sobra 18 em R1)<br>4. <code>MOV R3, 4</code><br>5. <code>ADD R1, R3</code> (total 22 em R1)<br>6. <code>HALT</code>",
+    skeleton: `; Missão 1: Sequência de Operações
+MOV R1, 25    ; Estoque inicial de 25 peças
+MOV R2, 7     ; 7 peças vendidas
+SUB R1, R2    ; R1 = 25 - 7 = 18
+MOV R3, 4     ; 4 peças de reposição
+ADD R1, R3    ; R1 = 18 + 4 = 22
+HALT          ; Fim do programa`,
+    check: () => simRegs["R1"] === 22
+  },
+  {
+    id: 1,
+    category: "2. Condicional",
+    title: "Missão 2: Sensor com Alarme (Desvio IF / ELSE)",
+    desc: "Crie uma decisão: coloque <code>0</code> em <code>R1</code> (simulando sensor de congelamento). Use <code>CMP R1, 0</code> para comparar. Se for igual a zero, desvie com <code>JZ alarme</code> e guarde <code>99</code> em <code>R0</code>. Se for diferente, guarde <code>1</code> em <code>R0</code>.",
+    hint: "Use <code>CMP R1, 0</code>. Logo abaixo coloque <code>JZ alarme</code>. Se não saltar, faça <code>MOV R0, 1</code> e <code>JMP fim</code>. No rótulo <code>alarme:</code>, coloque <code>MOV R0, 99</code>. No <code>fim:</code>, coloque <code>HALT</code>.",
+    skeleton: `; Missão 2: Condicional IF / ELSE
+MOV R1, 0         ; Valor do sensor (0 = congelamento)
+CMP R1, 0         ; Compara com 0 (seta Flag ZF=1 se igual)
+JZ alarme         ; Se for zero, desvia para o alarme!
+
+; Bloco normal (se não for zero):
+MOV R0, 1         ; Operação normal
+JMP fim           ; Pula o bloco de alarme
+
+alarme:
+MOV R0, 99        ; Código de Alarme acionado!
+
+fim:
+HALT`,
+    check: () => simRegs["R0"] === 99 && simRegs["R1"] === 0
+  },
+  {
+    id: 2,
+    category: "3. Loop",
+    title: "Missão 3: Somatório 4+3+2+1 com Contador Regressivo",
+    desc: "Calcule a soma de 1 até 4 (total = 10) usando um laço de repetição. Use <code>R1</code> como contador (começa em <code>4</code>) e <code>R2</code> como acumulador (começa em <code>0</code>). A cada volta do loop, some <code>R1</code> em <code>R2</code>, subtraia <code>1</code> de <code>R1</code> e repita com <code>JNZ loop</code> até o contador zerar!",
+    hint: "Crie o rótulo <code>loop:</code>. Dentro dele coloque <code>ADD R2, R1</code>, depois <code>SUB R1, 1</code>, e <code>JNZ loop</code>. Fora do loop, coloque <code>HALT</code>.",
+    skeleton: `; Missão 3: Loop com Somatório (4+3+2+1 = 10)
+MOV R1, 4         ; Contador: começa em 4
+MOV R2, 0         ; Acumulador: começa em 0
+
+loop:
+ADD R2, R1        ; Acumula o valor atual do contador em R2
+SUB R1, 1         ; Decrementa o contador em 1
+JNZ loop          ; Se R1 ainda NÃO for zero, repete o laço!
+
+HALT              ; Ao final, R2 conterá 10 e R1 conterá 0`,
+    check: () => simRegs["R2"] === 10 && simRegs["R1"] === 0
+  },
+  {
+    id: 3,
+    category: "4. Desafio",
+    title: "Missão 4: Multiplicação por Somas Sucessivas (3 × 5 = 15)",
+    desc: "Multiplique <strong>3 × 5</strong> somando o número <code>3</code> (em <code>R1</code>) um total de <code>5</code> vezes (contador <code>R2</code>) usando um loop. O resultado final acumulado deve terminar no registrador <code>R3</code> valendo exatamente <strong>15</strong>.",
+    hint: "Inicie <code>R1 = 3</code>, <code>R2 = 5</code>, <code>R3 = 0</code>. No loop: <code>ADD R3, R1</code>, depois <code>SUB R2, 1</code>, e <code>JNZ repete</code>. Ao sair com HALT, <code>R3</code> terá 15!",
+    skeleton: `; Missão 4: Multiplicação por Repetição (3 x 5)
+MOV R1, 3         ; Valor base a ser somado
+MOV R2, 5         ; Contador de repetições
+MOV R3, 0         ; Acumulador do resultado
+
+repete:
+ADD R3, R1        ; Soma o valor base em R3
+SUB R2, 1         ; Diminui uma repetição do contador
+JNZ repete        ; Enquanto o contador não zerar, repete!
+
+HALT              ; R3 terminará com 15!`,
+    check: () => simRegs["R3"] === 15 && simRegs["R2"] === 0
+  }
+];
+
+let simChal = [false, false, false, false];
+
 function initAct3() {
-  document.getElementById("actBody-simulator").innerHTML = `
-    <div class="challenges-grid">
-      <div class="challenge-card" id="chal-0">
-        <div class="challenge-header"><span class="challenge-num">Desafio 1</span><span class="challenge-status" id="cstat-0">⌛ Pendente</span></div>
-        <div class="challenge-title">Guarde o valor 10 no registrador R1</div>
-        <div class="challenge-hint" onclick="toggleHint(0)">💡 Ver dica</div>
-        <div class="challenge-hint-text" id="chint-0">Use o comando MOV. Exemplo: <code>MOV R1, 10</code>. Não esqueça do HALT no final.</div>
+  const container = document.getElementById("actBody-simulator");
+  if (!container) return;
+  
+  let html = `<div class="challenges-grid">`;
+  SIM_CHALLENGES.forEach((chal, i) => {
+    html += `
+      <div class="challenge-card ${simChal[i] ? 'solved' : ''}" id="chal-${i}">
+        <div class="challenge-header">
+          <span class="challenge-num">Desafio ${i+1}</span>
+          <span class="challenge-category">${chal.category}</span>
+          <span class="challenge-status" id="cstat-${i}">${simChal[i] ? '✅ Completo' : '⏳ Pendente'}</span>
+        </div>
+        <div class="challenge-title">${chal.title}</div>
+        <div class="challenge-desc">${chal.desc}</div>
+        <div class="challenge-actions">
+          <button class="btn-skeleton" onclick="loadChallengeSkeleton(${i})">📥 Carregar Esqueleto no Editor</button>
+          <span class="challenge-hint" onclick="toggleHint(${i})">💡 Ver dica explicativa</span>
+        </div>
+        <div class="challenge-hint-text" id="chint-${i}">${chal.hint}</div>
       </div>
-      <div class="challenge-card" id="chal-1">
-        <div class="challenge-header"><span class="challenge-num">Desafio 2</span><span class="challenge-status" id="cstat-1">⌛ Pendente</span></div>
-        <div class="challenge-title">Some 7 e 5, guarde o resultado final em R3</div>
-        <div class="challenge-hint" onclick="toggleHint(1)">💡 Ver dica</div>
-        <div class="challenge-hint-text" id="chint-1">Coloque 7 num registrador, 5 em outro, some, e depois mova para R3.</div>
-      </div>
-    </div>
-  `;
+    `;
+  });
+  html += `</div>`;
+  container.innerHTML = html;
 }
-function toggleHint(i) { document.getElementById("chint-"+i).classList.toggle("visible"); }
+
+function loadChallengeSkeleton(id) {
+  const chal = SIM_CHALLENGES[id];
+  if (!chal) return;
+  document.getElementById("asmEditor").value = chal.skeleton;
+  loadProgram();
+  logConsole(`📥 Esqueleto do "${chal.title}" carregado no editor!`, "exec");
+  document.getElementById("asmEditor").scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function toggleHint(i) {
+  const el = document.getElementById("chint-" + i);
+  if (el) el.classList.toggle("visible");
+}
+
 function checkChallenges() {
-  if (simRegs["R1"] === 10 && !simChal[0]) { simChal[0] = true; markChal(0); }
-  if (simRegs["R3"] === 12 && !simChal[1]) { simChal[1] = true; markChal(1); }
-  if (simChal[0] && simChal[1]) markActivityDone("simulator");
+  let anyNew = false;
+  SIM_CHALLENGES.forEach((chal, i) => {
+    if (!simChal[i] && chal.check()) {
+      simChal[i] = true;
+      markChal(i);
+      anyNew = true;
+      logConsole(`🎉 Parabéns! Você completou a ${chal.title}!`, "success");
+    }
+  });
+
+  if (simChal.every(Boolean)) {
+    markActivityDone("simulator");
+    logConsole("🏆 Extraordinário! Você concluiu todos os 4 desafios do simulador de CPU!", "success");
+  }
 }
+
 function markChal(i) {
-  document.getElementById(`chal-${i}`).classList.add("solved");
-  document.getElementById(`cstat-${i}`).textContent = "✅ Completo";
-  document.getElementById(`cstat-${i}`).style.color = "var(--success)";
+  const card = document.getElementById(`chal-${i}`);
+  const stat = document.getElementById(`cstat-${i}`);
+  if (card) card.classList.add("solved");
+  if (stat) {
+    stat.textContent = "✅ Completo";
+    stat.style.color = "var(--success)";
+  }
 }
 
 // ──────────────────────────────────────────────
@@ -683,5 +1142,5 @@ function restartQuiz() { currentQuestion = 0; answers.fill(null); document.getEl
 
 // INICIALIZAÇÃO
 document.addEventListener("DOMContentLoaded", () => {
-  initAct1(); initAct2(); initAct3(); initAct4(); initAct5();
+  initAct1(); initAct2(); initSim(); initAct3(); initAct4(); initAct5();
 });

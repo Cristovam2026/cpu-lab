@@ -357,32 +357,65 @@ body {
 .order-card.used { opacity: .35; cursor: default; pointer-events: none; }
 
 /* Activity: challenges (simulator) */
-.challenges-grid { display: flex; flex-direction: column; gap: 12px; }
+.challenges-grid { display: flex; flex-direction: column; gap: 14px; }
 .challenge-card {
   background: var(--bg-card2);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 16px 18px;
-  transition: border-color .3s;
+  padding: 18px 20px;
+  transition: all .3s;
 }
-.challenge-card.solved { border-color: var(--success); background: rgba(16,185,129,0.06); }
+.challenge-card.solved { border-color: var(--success); background: rgba(16,185,129,0.06); box-shadow: 0 0 12px rgba(16,185,129,0.15); }
 .challenge-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
 .challenge-num { font-size: .72rem; font-weight: 700; color: var(--accent2); text-transform: uppercase; letter-spacing: .08em; }
-.challenge-status { margin-left: auto; font-size: .8rem; }
-.challenge-title { font-weight: 700; font-size: .92rem; color: var(--text-primary); margin-bottom: 6px; }
-.challenge-desc { font-size: .84rem; color: var(--text-secondary); line-height: 1.55; margin-bottom: 10px; }
-.challenge-hint { font-size: .8rem; color: var(--text-muted); cursor: pointer; text-decoration: underline; display: inline-block; margin-bottom: 8px; }
+.challenge-category { font-size: .68rem; font-weight: 700; padding: 2px 8px; border-radius: 99px; background: rgba(99,102,241,0.15); color: #a5b4fc; border: 1px solid rgba(99,102,241,0.3); }
+.challenge-status { margin-left: auto; font-size: .8rem; font-weight: 600; }
+.challenge-title { font-weight: 700; font-size: .95rem; color: var(--text-primary); margin-bottom: 6px; }
+.challenge-desc { font-size: .86rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 12px; }
+.challenge-desc strong { color: #f1f5f9; }
+.challenge-desc code { color: var(--accent2); background: rgba(34,211,238,0.1); padding: 1px 5px; border-radius: 3px; font-family: var(--font-code); font-size: .82rem; }
+.challenge-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+.btn-skeleton {
+  background: rgba(99,102,241,0.15);
+  border: 1px solid rgba(99,102,241,0.4);
+  color: #a5b4fc;
+  font-size: .8rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all .2s;
+  font-family: var(--font-ui);
+}
+.btn-skeleton:hover {
+  background: rgba(99,102,241,0.3);
+  color: #fff;
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+.challenge-hint { font-size: .8rem; color: var(--text-muted); cursor: pointer; text-decoration: underline; display: inline-block; }
+.challenge-hint:hover { color: var(--accent2); }
 .challenge-hint-text {
   display: none;
   font-size: .82rem;
-  color: var(--warning);
+  color: #fcd34d;
   background: rgba(245,158,11,0.08);
   border-left: 3px solid var(--warning);
-  padding: 8px 12px;
+  padding: 10px 14px;
   border-radius: 0 6px 6px 0;
-  margin-top: 8px;
+  margin-top: 10px;
+  font-family: var(--font-ui);
+  line-height: 1.65;
+}
+.challenge-hint-text code {
+  color: #fff;
+  background: rgba(0,0,0,0.3);
+  padding: 2px 6px;
+  border-radius: 4px;
   font-family: var(--font-code);
-  line-height: 1.6;
 }
 .challenge-hint-text.visible { display: block; animation: slideDown .3s ease; }
 
@@ -576,11 +609,174 @@ body {
 .cycle-status { padding: 11px 18px; background: rgba(99,102,241,0.07); border-top: 1px solid var(--border); font-size: .82rem; color: var(--text-secondary); font-style: italic; min-height: 44px; transition: all .4s; }
 
 /* ══════════════════════════
-   SIMULATOR
+   SIMULATOR: CONCEITOS & HARDWARE
 ══════════════════════════ */
-.sim-layout { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; gap: 18px; }
-.sim-editor-card  { grid-row: 1/3; }
-.sim-console-card { grid-column: 2; }
+.sim-concepts-guide {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 22px;
+}
+.concept-guide-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  transition: all .2s;
+  display: flex;
+  flex-direction: column;
+}
+.concept-guide-card:hover {
+  border-color: var(--accent2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(34,211,238,0.08);
+}
+.concept-guide-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.concept-guide-icon { font-size: 1.3rem; }
+.concept-guide-title { font-weight: 700; font-size: .88rem; color: #a5b4fc; }
+.concept-guide-desc { font-size: .82rem; color: var(--text-secondary); line-height: 1.55; flex: 1; }
+.concept-guide-desc strong { color: #f1f5f9; }
+.concept-guide-example {
+  margin-top: 10px;
+  background: #040c18;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 4px;
+  padding: 7px 10px;
+  font-family: var(--font-code);
+  font-size: .74rem;
+  color: var(--accent2);
+  line-height: 1.5;
+}
+
+/* ══════════════════════════
+   SIMULATOR LAYOUT
+══════════════════════════ */
+.sim-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+.sim-editor-card { display: flex; flex-direction: column; }
+.sim-state-card { margin-bottom: 0; }
+
+/* Raio-X do Processador / Hardware em Ação */
+.sim-hw-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(34,211,238,0.25);
+  border-radius: var(--radius);
+  box-shadow: 0 0 15px rgba(34,211,238,0.05);
+  overflow: hidden;
+}
+.hw-stage-pipeline {
+  display: flex;
+  gap: 6px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.02);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+}
+.hw-stage-badge {
+  flex: 1;
+  text-align: center;
+  padding: 6px 6px;
+  border-radius: 5px;
+  font-size: .7rem;
+  font-family: var(--font-code);
+  font-weight: 600;
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  transition: all .3s;
+  white-space: nowrap;
+}
+.hw-stage-badge.active {
+  background: rgba(99,102,241,0.25);
+  border-color: var(--accent);
+  color: #fff;
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+.hw-components-row {
+  display: flex;
+  gap: 6px;
+  padding: 8px 14px;
+  flex-wrap: wrap;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  background: rgba(0,0,0,0.18);
+}
+.hw-comp-label {
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--text-muted);
+  font-weight: 700;
+  margin-right: 2px;
+}
+.hw-comp-badge {
+  font-size: .7rem;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  transition: all .25s;
+}
+.hw-comp-badge.active {
+  border-color: var(--accent2);
+  background: rgba(34,211,238,0.18);
+  color: #67e8f9;
+  font-weight: 700;
+  box-shadow: 0 0 8px rgba(34,211,238,0.3);
+}
+.hw-narration-box {
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.hw-action-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .84rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.hw-action-code {
+  font-family: var(--font-code);
+  color: var(--accent2);
+  background: rgba(34,211,238,0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(34,211,238,0.25);
+  font-size: .82rem;
+}
+.hw-explanation-text {
+  font-size: .86rem;
+  color: #e2e8f0;
+  line-height: 1.6;
+  background: rgba(255,255,255,0.03);
+  padding: 12px 14px;
+  border-left: 3px solid var(--accent2);
+  border-radius: 0 6px 6px 0;
+  font-family: var(--font-ui);
+}
+.hw-explanation-text strong {
+  color: var(--accent2);
+}
+.hw-next-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: .76rem;
+  color: var(--text-muted);
+  border-top: 1px dashed rgba(255,255,255,0.07);
+  padding-top: 8px;
+}
+.hw-next-info strong {
+  color: #a5b4fc;
+}
 .editor-toolbar { display: flex; gap: 7px; padding: 10px 14px; border-bottom: 1px solid var(--border); }
 .asm-editor { width: 100%; min-height: 220px; background: #070e1c; color: #a5b4fc; font-family: var(--font-code); font-size: .86rem; border: none; padding: 14px; resize: vertical; outline: none; line-height: 1.65; }
 .asm-editor::placeholder { color: #2d3f5e; }
@@ -832,6 +1028,7 @@ body {
 @media (max-width: 800px) {
   :root { --sidebar-w: 200px; }
   .tab-content { padding: 20px 16px 40px; }
+  .sim-concepts-guide { grid-template-columns: 1fr; }
   .cycle-layout  { grid-template-columns: 1fr; }
   .hazards-grid  { grid-template-columns: 1fr; }
   .concepts-row  { grid-template-columns: 1fr; }
